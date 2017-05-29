@@ -1,8 +1,10 @@
 package com.example.android.myapplication;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +16,11 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private Button mButtonStartCallback;
     private Button mButtonStopCallback;
+
+    private Button mButtonStartService;
+    private Button mButtonStopService;
+
+    private Intent serviceIntent;
 
 
     private final CountRecorder.Callback mCountCallback = new CountRecorder.Callback() {
@@ -53,6 +60,25 @@ public class MainActivity extends AppCompatActivity {
                 stopCallback();
             }
         });
+
+
+        // explicit-intent
+        serviceIntent = new Intent(getApplicationContext(), MyService.class);
+        mButtonStartService = (Button) findViewById(R.id.buttonStartService);
+        mButtonStartService.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startService(serviceIntent);
+            }
+        });
+
+        mButtonStopService = (Button) findViewById(R.id.buttonStopService);
+        mButtonStopService.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //stopService();
+                Log.i("SERVICE", "stopping service")
+            }
+        });
+
     }
 
 
