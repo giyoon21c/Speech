@@ -11,7 +11,42 @@
     tools:context="com.example.android.myapplication.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/textViewThreadCount"
+        android:layout_alignParentTop="true"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
+        android:text="text view..."/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStartCallback"
+        android:layout_below="@id/textViewThreadCount"
+        android:text="Start callback"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStopCallback"
+        android:layout_below="@id/buttonStartCallback"
+        android:text="Stop callback"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStartService"
+        android:layout_below="@id/buttonStopCallback"
+        android:text="Start service"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStopService"
+        android:layout_below="@id/buttonStartService"
+        android:text="Stop service"/>
+
 </RelativeLayout>

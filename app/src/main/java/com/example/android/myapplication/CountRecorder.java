@@ -38,6 +38,13 @@ public class CountRecorder {
         mThread.start();
     }
 
+    public void stop() {
+        if (mThread != null) {
+            mThread.interrupt();
+            mThread = null;
+        }
+    }
+
     private class ProcessData implements Runnable {
         int i;
         @Override
@@ -46,9 +53,15 @@ public class CountRecorder {
                 if (i == 0) {
                     mCallback.onCountStart();
                 } else {
-                    if ((i % 10000) == 0) {
-                        mCallback.onCount(i);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                    //if ((i % 10000) == 0) {
+                    //    mCallback.onCount(i);
+                    //}
+                    mCallback.onCount(i);
                 }
                 i++;
             }
