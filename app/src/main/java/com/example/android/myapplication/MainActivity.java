@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import static com.example.android.myapplication.R.id.buttonStartCallback;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private CountRecorder mCountRecorder;
     public TextView mStatusUpdate;
     private Handler handler;
+
     private Button mButtonStartCallback;
     private Button mButtonStopCallback;
 
@@ -47,19 +50,11 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler(); // Initialize the Handler from the Main Thread
                                  // One must use a Handler to modify a view from the main thread.
 
-        mButtonStartCallback = (Button) findViewById(R.id.buttonStartCallback);
-        mButtonStartCallback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startCallback();
-            }
-        });
+        mButtonStartCallback = (Button) findViewById(buttonStartCallback);
+        mButtonStartCallback.setOnClickListener(this);
 
         mButtonStopCallback = (Button) findViewById(R.id.buttonStopCallback);
-        mButtonStopCallback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                stopCallback();
-            }
-        });
+        mButtonStopCallback.setOnClickListener(this);
 
 
         // explicit-intent
@@ -75,12 +70,25 @@ public class MainActivity extends AppCompatActivity {
         mButtonStopService.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //stopService();
-                Log.i("SERVICE", "stopping service")
+                Log.i("SERVICE", "stopping service");
             }
         });
 
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.buttonStartCallback: startCallback();
+                break;
+            case R.id.buttonStopCallback: stopCallback();
+                break;
+            case R.id.buttonStartService:
+                break;
+            case R.id.buttonStopService:
+                break;
+        }
+    }
 
     @Override
     protected void onStart() {

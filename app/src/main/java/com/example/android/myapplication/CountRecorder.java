@@ -38,6 +38,10 @@ public class CountRecorder {
         mThread.start();
     }
 
+    /*
+        interrupting a thread is not enough to stop from running.
+        mThread == Thread.currentThread is used to check whether thread exists
+     */
     public void stop() {
         if (mThread != null) {
             mThread.interrupt();
@@ -49,7 +53,7 @@ public class CountRecorder {
         int i;
         @Override
         public void run() {
-            while (true) {
+            while (true && mThread == Thread.currentThread()) {
                 if (i == 0) {
                     mCallback.onCountStart();
                 } else {
@@ -58,9 +62,12 @@ public class CountRecorder {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    //if ((i % 10000) == 0) {
-                    //    mCallback.onCount(i);
-                    //}
+
+                    /*
+                    if ((i % 10000) == 0) {
+                        mCallback.onCount(i);
+                    }
+                    */
                     mCallback.onCount(i);
                 }
                 i++;
