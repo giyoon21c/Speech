@@ -49,4 +49,19 @@
         android:layout_below="@id/buttonStartService"
         android:text="Stop service"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStartAsyncTask"
+        android:layout_below="@id/buttonStopService"
+        android:text="Start AsyncTask"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStopAsyncTask"
+        android:layout_below="@id/buttonStartAsyncTask"
+        android:text="Stop AsyncTask"/>
+
+
 </RelativeLayout>

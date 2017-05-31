@@ -1,6 +1,7 @@
 package com.example.android.myapplication;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,8 +24,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mButtonStartService;
     private Button mButtonStopService;
 
+    private Button mButtonStartAsyncTask;
+    private Button mButtonStopAsyncTask;
+
     private Intent serviceIntent;
 
+    // async task related declaration
+    private MyAsyncTask myAsyncTask;
+    boolean mStopLoop = true;
 
     private final CountRecorder.Callback mCountCallback = new CountRecorder.Callback() {
         @Override
@@ -74,6 +81,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        mButtonStartAsyncTask = (Button) findViewById(R.id.buttonStartAsyncTask);
+        mButtonStartAsyncTask.setOnClickListener(this);
+
+        mButtonStopAsyncTask = (Button) findViewById(R.id.buttonStopAsyncTask);
+        mButtonStopAsyncTask.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -86,6 +100,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonStartService:
                 break;
             case R.id.buttonStopService:
+                break;
+            case R.id.buttonStartAsyncTask:
+                myAsyncTask = new MyAsyncTask();
+                myAsyncTask.execute(0); // pass in the initial value
+                break;
+            case R.id.buttonStopAsyncTask:
+                //mStopLoop = false;
+                myAsyncTask.cancel(true);
                 break;
         }
     }
@@ -117,4 +139,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCountRecorder = new CountRecorder(mCountCallback);
         mCountRecorder.start();
     }
+
+    /*
+       Using AsyncTask to update the UI
+     */
+    private class MyAsyncTask extends AsyncTask<Integer, Integer, Integer> {
+
+        private int counter;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            counter = 0;
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+            counter = integers[0];
+            while (mStopLoop) {
+                try {
+                    Thread.sleep(1000);
+                    counter++;
+                    publishProgress(counter);
+                } catch (InterruptedException e) {
+                    Log.i("ASYNCTASK", e.getMessage());
+                }
+            }
+            return counter;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer...values) {
+            super.onProgressUpdate(values);
+            mStatusUpdate = (TextView) findViewById(R.id.textViewThreadCount);
+            mStatusUpdate.setText(""+values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            counter = integer;
+        }
+    }
 }
+
