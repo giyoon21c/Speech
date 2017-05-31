@@ -63,31 +63,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButtonStopCallback = (Button) findViewById(R.id.buttonStopCallback);
         mButtonStopCallback.setOnClickListener(this);
 
-
-        // explicit-intent
-        serviceIntent = new Intent(getApplicationContext(), MyService.class);
         mButtonStartService = (Button) findViewById(R.id.buttonStartService);
-        mButtonStartService.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startService(serviceIntent);
-            }
-        });
+        mButtonStartService.setOnClickListener(this);
 
         mButtonStopService = (Button) findViewById(R.id.buttonStopService);
-        mButtonStopService.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //stopService();
-                Log.i("SERVICE", "stopping service");
-            }
-        });
+        mButtonStopService.setOnClickListener(this);
 
         mButtonStartAsyncTask = (Button) findViewById(R.id.buttonStartAsyncTask);
         mButtonStartAsyncTask.setOnClickListener(this);
 
         mButtonStopAsyncTask = (Button) findViewById(R.id.buttonStopAsyncTask);
         mButtonStopAsyncTask.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -98,8 +84,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonStopCallback: stopCallback();
                 break;
             case R.id.buttonStartService:
+                serviceIntent = new Intent(getApplicationContext(), MyService.class);
+                startService(serviceIntent);
                 break;
             case R.id.buttonStopService:
+                Log.i("SERVICE", "stopping service");
                 break;
             case R.id.buttonStartAsyncTask:
                 myAsyncTask = new MyAsyncTask();
