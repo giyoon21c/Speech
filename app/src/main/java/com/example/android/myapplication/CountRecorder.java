@@ -29,7 +29,7 @@ public class CountRecorder {
     private final Callback mCallback;
 
     //constructor
-    public CountRecorder(@NonNull Callback callback) {
+    public CountRecorder(Callback callback) {
         mCallback = callback;
     }
 
