@@ -21,11 +21,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mButtonStartCallback;
     private Button mButtonStopCallback;
 
+    private Button mButtonStartAsyncTask;
+    private Button mButtonStopAsyncTask;
+
     private Button mButtonStartService;
     private Button mButtonStopService;
 
-    private Button mButtonStartAsyncTask;
-    private Button mButtonStopAsyncTask;
+    private Button mButtonBindService;
+    private Button mButtonUnBindService;
+    private Button mButtonGetRandomNumber;
 
     private Intent serviceIntent;
 
@@ -63,17 +67,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mButtonStopCallback = (Button) findViewById(R.id.buttonStopCallback);
         mButtonStopCallback.setOnClickListener(this);
 
+        mButtonStartAsyncTask = (Button) findViewById(R.id.buttonStartAsyncTask);
+        mButtonStartAsyncTask.setOnClickListener(this);
+
+        mButtonStopAsyncTask = (Button) findViewById(R.id.buttonStopAsyncTask);
+        mButtonStopAsyncTask.setOnClickListener(this);
+
         mButtonStartService = (Button) findViewById(R.id.buttonStartService);
         mButtonStartService.setOnClickListener(this);
 
         mButtonStopService = (Button) findViewById(R.id.buttonStopService);
         mButtonStopService.setOnClickListener(this);
 
-        mButtonStartAsyncTask = (Button) findViewById(R.id.buttonStartAsyncTask);
-        mButtonStartAsyncTask.setOnClickListener(this);
+        mButtonBindService = (Button) findViewById(R.id.buttonBindService);
+        mButtonBindService.setOnClickListener(this);
 
-        mButtonStopAsyncTask = (Button) findViewById(R.id.buttonStopAsyncTask);
-        mButtonStopAsyncTask.setOnClickListener(this);
+        mButtonUnBindService = (Button) findViewById(R.id.buttonUnBindService);
+        mButtonUnBindService.setOnClickListener(this);
+
+        mButtonGetRandomNumber = (Button) findViewById(R.id.buttonGetRandomNumber);
+        mButtonGetRandomNumber.setOnClickListener(this);
     }
 
     @Override
@@ -83,13 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.buttonStopCallback: stopCallback();
                 break;
-            case R.id.buttonStartService:
-                serviceIntent = new Intent(getApplicationContext(), MyService.class);
-                startService(serviceIntent);
-                break;
-            case R.id.buttonStopService:
-                Log.i("SERVICE", "stopping service");
-                break;
+
             case R.id.buttonStartAsyncTask:
                 myAsyncTask = new MyAsyncTask();
                 myAsyncTask.execute(0); // pass in the initial value
@@ -98,14 +105,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //mStopLoop = false;
                 myAsyncTask.cancel(true);
                 break;
+
+            case R.id.buttonStartService:
+                serviceIntent = new Intent(getApplicationContext(), MyService.class);
+                startService(serviceIntent);
+                break;
+            case R.id.buttonStopService:
+                Log.i("SERVICE", "stopping service");
+                break;
+            case R.id.buttonBindService:
+                bindService();
+                break;
+            case R.id.buttonUnBindService:
+                unbindService();
+                break;
+            case R.id.buttonGetRandomNumber:
+                mStatusUpdate = (TextView) findViewById(R.id.textViewThreadCount);
+                if (isServiceBound) {
+                    mStatusUpdate.setText("" + myService.getRandomNumber());
+                } else {
+                    mStatusUpdate.setText("Service not bound!");
+                }
+                break;
         }
     }
+
+
 
     @Override
     protected void onStart() {
         super.onStart();
     }
 
+    /*
+       Using Callback to update the UI
+     */
     protected void startCallback() {
         startCountRecorder();
     }
@@ -169,6 +203,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onPostExecute(integer);
             counter = integer;
         }
+    }
+
+    /*
+       Using Service to update the UI
+     */
+    private void bindService() {
+
+    }
+
+    private void unBindService() {
+
+    }
+
+    private void setRandomNumber() {
+
     }
 }
 
