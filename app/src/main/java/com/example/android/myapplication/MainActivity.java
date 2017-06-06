@@ -1,8 +1,13 @@
 package com.example.android.myapplication;
 
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,11 +36,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mButtonUnBindService;
     private Button mButtonGetRandomNumber;
 
-    private Intent serviceIntent;
-
-    // async task related declaration
+    /*
+       async task related declaration
+     */
     private MyAsyncTask myAsyncTask;
     boolean mStopLoop = true;
+
+    /*
+       Service related declarations
+     */
+    private Intent serviceIntent;
+    private MyService myService;
+    private boolean isServiceBound;
+    private ServiceConnection serviceConnection;
+
 
     private final CountRecorder.Callback mCountCallback = new CountRecorder.Callback() {
         @Override
@@ -120,17 +134,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 unbindService();
                 break;
             case R.id.buttonGetRandomNumber:
-                mStatusUpdate = (TextView) findViewById(R.id.textViewThreadCount);
-                if (isServiceBound) {
-                    mStatusUpdate.setText("" + myService.getRandomNumber());
-                } else {
-                    mStatusUpdate.setText("Service not bound!");
-                }
+                setRandomNumber();
                 break;
         }
     }
-
-
 
     @Override
     protected void onStart() {
@@ -209,15 +216,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        Using Service to update the UI
      */
     private void bindService() {
+        if (serviceConnection == null) {
+            serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName componentName,
+                                               IBinder iBinder) {
+                    MyService.MyServiceBinder myServiceBinder =
+                            (MyService.MyServiceBinder) iBinder;
+                    myService = myServiceBinder.getService();
+                    isServiceBound = true;
+                }
 
+                @Override
+                public void onServiceDisconnected(ComponentName componentName) {
+                    isServiceBound = false;
+                }
+            };
+        }
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    private void unBindService() {
-
+    private void unbindService() {
+        if (isServiceBound) {
+            unbindService(serviceConnection);
+            isServiceBound = false;
+        }
     }
 
     private void setRandomNumber() {
-
+        if (isServiceBound) {
+            mStatusUpdate = (TextView) findViewById(R.id.textViewThreadCount);
+            mStatusUpdate.setText(""+myService.getRandomNumber());
+        } else {
+            mStatusUpdate.setText("Service not bound");
+        }
     }
 }
 

@@ -60,8 +60,11 @@ public class MyService extends Service {
         //stopSelf();
 
         mIsRandomGeneratorOn = true;
-        new Thread((Runnable) () -> {
-            startRandomNumberGenerator();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                startRandomNumberGenerator();
+            }
         }).start();
         return START_STICKY;
     }

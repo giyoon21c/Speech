@@ -38,8 +38,22 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonStartService"
+        android:id="@+id/buttonStartAsyncTask"
         android:layout_below="@id/buttonStopCallback"
+        android:text="Start AsyncTask"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStopAsyncTask"
+        android:layout_below="@id/buttonStartAsyncTask"
+        android:text="Stop AsyncTask"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStartService"
+        android:layout_below="@id/buttonStopAsyncTask"
         android:text="Start service"/>
 
     <Button
@@ -52,16 +66,22 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonStartAsyncTask"
+        android:id="@+id/buttonBindService"
         android:layout_below="@id/buttonStopService"
-        android:text="Start AsyncTask"/>
+        android:text="Bind Service"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonStopAsyncTask"
-        android:layout_below="@id/buttonStartAsyncTask"
-        android:text="Stop AsyncTask"/>
+        android:id="@+id/buttonUnBindService"
+        android:layout_below="@id/buttonBindService"
+        android:text="UnBind Service"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonGetRandomNumber"
+        android:layout_below="@id/buttonUnBindService"
+        android:text="Get Random Number"/>
 
 </RelativeLayout>
